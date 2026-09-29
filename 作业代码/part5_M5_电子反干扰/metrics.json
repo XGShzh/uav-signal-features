@@ -1,0 +1,14 @@
+{
+  "module": "M5 特征支撑电子反干扰",
+  "processing_gain_fhss_db": 20.0,
+  "processing_gain_dsss_db": 43.10905629376141,
+  "avail_baseline": 0.6825699999999999,
+  "avail_rl_afh": 0.999,
+  "spoof_detect_pd50_jsr_db": {
+    "power": -3.0,
+    "correlation": 0.0,
+    "ins": -6.0
+  },
+  "ins_aided_max_error_m": 2.303584504802956,
+  "unprotected_max_error_m": 29.999999978768827
+}

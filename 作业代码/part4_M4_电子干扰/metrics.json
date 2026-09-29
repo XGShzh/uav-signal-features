@@ -1,0 +1,8 @@
+{
+  "module": "M4 特征指导电子干扰",
+  "jsr_follow_db": -16.71347996857703,
+  "jsr_wideband_db": 2.9999999996173927,
+  "precision_jamming_gain_db": 19.713479968194424,
+  "target_ber": 0.01,
+  "fhss_channel_gain_db": 20.0
+}
