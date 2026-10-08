@@ -41,7 +41,8 @@ python part1_M1_信号建模/run_part1.py   # 依序运行 M1→M6，每模块�
 python part6_M6_闭环评估/run_part6.py   # 需要 M2–M5 先跑过（读取 metrics.json）
 ```
 
-每个模块都 `--show` 可弹窗预览；`requirements.txt` 列明依赖。
+运行后图表自动保存到各模块 `figures/`；`M1` 额外支持 `--show` 弹出预览窗口；
+依赖见各模块 `requirements.txt`（M1–M3 提供，其余模块依赖一致：numpy / scipy / matplotlib / scikit-learn / pandas）。
 
 ## 文献依据
 

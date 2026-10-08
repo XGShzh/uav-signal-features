@@ -184,7 +184,7 @@ def spoof_detect_pd(jsr_db, method="correlation"):
     """
     jsr = np.asarray(jsr_db, dtype=float)
     params = {
-        "power":       dict(th=-3.0, slope=1.0),   # 50% 检测点约 +3 dB
+        "power":       dict(th=+3.0, slope=1.0),   # 50% 检测点约 +3 dB
         "correlation": dict(th=0.0, slope=1.0),    # 50% 检测点约 0 dB
         "ins":         dict(th=-6.0, slope=1.0),   # 50% 检测点约 −6 dB
     }[method]

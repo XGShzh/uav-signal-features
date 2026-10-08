@@ -5,8 +5,8 @@
   "avail_baseline": 0.6825699999999999,
   "avail_rl_afh": 0.999,
   "spoof_detect_pd50_jsr_db": {
-    "power": -3.0,
-    "correlation": 0.0,
+    "power": 3.0000000000000004,
+    "correlation": 4.73675420983231e-16,
     "ins": -6.0
   },
   "ins_aided_max_error_m": 2.303584504802956,

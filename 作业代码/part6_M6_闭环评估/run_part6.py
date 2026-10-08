@@ -176,11 +176,21 @@ def build_summary(met):
         (f"{av_rl*100:.1f}% vs 基线 {av_b*100:.1f}%" if (av_b and av_rl) else "—"),
         "RL（Q-learning）避让被干扰信道",
     ])
+    pd50 = _g(m5, "spoof_detect_pd50_jsr_db") or {}
+    if all(k in pd50 for k in ("ins", "correlation", "power")):
+        def _sgn(v):
+            v = round(v)
+            return (("−" if v < 0 else "+") if v != 0 else "") + f"{abs(v):.0f}"
+        spoof_txt = (f"惯导 {_sgn(pd50['ins'])} dB / "
+                     f"相关峰 {_sgn(pd50['correlation'])} dB / "
+                     f"功率 {_sgn(pd50['power'])} dB")
+    else:
+        spoof_txt = "—"
     rows.append([
         "电子反干扰", "M5",
-        "欺骗检测灵敏度",
-        ("惯导 −6 dB / 相关峰 0 dB / 功率 +3 dB" if m5 else "—"),
-        "惯导一致性独立参考最优",
+        "欺骗检测灵敏度（Pd=50%）",
+        spoof_txt,
+        "惯导一致性独立参考最优（功率检测需欺骗强于真实信号）",
     ])
     rows.append([
         "电子反干扰", "M5",
@@ -228,7 +238,7 @@ def draw_closed_loop(met, rows):
     acc_cnn = _g(m3, "acc_cnn") or {}
     recog = acc_rf.get("-12", acc_rf.get(-12, "—"))
     cnnv = acc_cnn.get("-12", acc_cnn.get(-12, "—"))
-    detect_txt = (f"弱信号检测：CFD 优于 ED {gain:.0f} dB" if gain is not None
+    detect_txt = (f"弱信号检测：CFD 优于 ED {gain:.1f} dB" if gain is not None
                   else "弱信号检测")
     box(4, 72, 30, 20,
         "电子侦察（M3）\n" + detect_txt +
@@ -238,7 +248,7 @@ def draw_closed_loop(met, rows):
     g_jam = _g(m4, "precision_jamming_gain_db")
     box(66, 72, 30, 20,
         "电子干扰（M4）\n" +
-        (f"精准干扰增益 {g_jam:.0f} dB\n" if g_jam is not None else "") +
+        (f"精准干扰增益 {g_jam:.1f} dB\n" if g_jam is not None else "") +
         "跟随式 vs 盲目宽带\nGNSS 欺骗（受控牵引）/ 压制（失锁）",
         "#FDF1E7", "#C2410C", fs=9.5, tc="#7C2D12")
 
@@ -248,7 +258,7 @@ def draw_closed_loop(met, rows):
     err_i = _g(m5, "ins_aided_max_error_m")
     anti_txt = "电子反干扰（M5）\n"
     if av_rl is not None and av_b is not None:
-        anti_txt += f"RL 自适应跳频可用度 {av_rl*100:.0f}%\n（基线 {av_b*100:.0f}%）\n"
+        anti_txt += f"RL 自适应跳频可用度 {av_rl*100:.1f}%\n（基线 {av_b*100:.1f}%）\n"
     if err_u is not None and err_i is not None:
         anti_txt += f"惯导辅助：误差 {err_u:.0f} m → {err_i:.1f} m"
     box(35, 8, 30, 22, anti_txt, "#EFF8E8", "#347A0E", fs=9.5, tc="#22510A")

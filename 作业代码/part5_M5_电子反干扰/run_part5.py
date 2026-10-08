@@ -61,6 +61,20 @@ def savefig(fig, name, tight=True):
     print(f"[已保存] {path}")
 
 
+def _pd50_jsr(method):
+    """从检测曲线实算 Pd=50% 对应的 JSR（不手工抄录，保证与图一致）。
+
+    在越过 0.5 的两点间线性插值，消除网格步长带来的离散误差。
+    """
+    j = np.arange(-40.0, 41.0, 0.05)
+    p = spoof_detect_pd(j, method)
+    idx = int(np.argmax(p >= 0.5))
+    if idx == 0:
+        return float(j[0])
+    j0, j1, p0, p1 = j[idx - 1], j[idx], p[idx - 1], p[idx]
+    return float(j0 + (0.5 - p0) * (j1 - j0) / (p1 - p0))
+
+
 def main():
     # ================= 处理增益（报告引用） =================
     g_fhss = processing_gain_fhss(10e6, 100e3)
@@ -218,7 +232,7 @@ def main():
         "avail_baseline": float(avail_uniform[-2000:].mean()),
         "avail_rl_afh": float(avail_rl[-2000:].mean()),
         "spoof_detect_pd50_jsr_db": {
-            "power": -3.0, "correlation": 0.0, "ins": -6.0},
+            m: _pd50_jsr(m) for m in ("power", "correlation", "ins")},
         "ins_aided_max_error_m": float(
             navigation_error_vs_time(np.linspace(0, 20, 400), "ins").max()),
         "unprotected_max_error_m": float(
